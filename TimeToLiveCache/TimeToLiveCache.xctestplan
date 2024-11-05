@@ -1,0 +1,29 @@
+{
+  "configurations" : [
+    {
+      "id" : "A20C7EA2-2142-4D77-9E84-9EABE03D6555",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:TimeToLiveCache.xcodeproj",
+      "identifier" : "AD587D332CD4A5B7008091D5",
+      "name" : "TimeToLiveCache"
+    }
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : false,
+      "target" : {
+        "containerPath" : "container:TimeToLiveCache.xcodeproj",
+        "identifier" : "AD587D432CD4A5B8008091D5",
+        "name" : "TimeToLiveCacheTests"
+      }
+    }
+  ],
+  "version" : 1
+}
