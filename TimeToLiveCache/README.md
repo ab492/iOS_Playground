@@ -1,6 +1,6 @@
 # Challenge: Implement a Cache with Time-to-Live (TTL) using Property Wrappers
 
-All code is in `PropertyWrapperCacheTests`.
+All code is in `TimeToLiveCacheTests`.
 
 ## Problem Statement
 You need to create a cache system that stores values in memory with an expiration time. Once a value’s TTL has expired, the cache should automatically return nil instead of the stored value. You will use a custom property wrapper to manage the cache, handle the TTL, and invalidate the values once the TTL is reached.
