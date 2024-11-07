@@ -72,19 +72,6 @@ struct PasswordValidatorTests {
         
         #expect(errors.isEmpty)
     }
-    
-    @Test
-    func onlyCheckLength_doesntTriggerOtherRules() {
-        let sut = PasswordValidator(enabledRules: [.eightCharactersOrMore])
-        
-        let errors = sut.validate("abcdefg")
-        
-        #expect(errors == [.passwordLessThanEightCharacters])
-    }
-    
-    
-    
-    // TODO: could use zip for rules?
 }
 
 private extension Array where Element == PasswordValidator.ValidationError {
@@ -98,10 +85,6 @@ private extension Array where Element == PasswordValidator.ValidationError {
 }
 
 struct PasswordValidator {
-    enum Rule {
-        case eightCharactersOrMore
-    }
-    
     enum ValidationError {
         case passwordLessThanEightCharacters
         case passwordDoesNotContainUppercaseCharacters
@@ -109,13 +92,7 @@ struct PasswordValidator {
         case passwordDoesNotContainDigits
         case passwordDoesNotContainSpecialCharacter
     }
-    
-    private let enabledRules: [Rule]?
-    
-    init(enabledRules: [Rule]? = nil) {
-        self.enabledRules = enabledRules
-    }
-    
+            
     func validate(_ password: String) -> [ValidationError] {
         var validationErrors = [ValidationError]()
         
@@ -123,15 +100,15 @@ struct PasswordValidator {
             validationErrors.append(.passwordLessThanEightCharacters)
         }
         
-        if password.contains(where: { $0.isUppercase }) == false {
+        if password.rangeOfCharacter(from: .uppercaseLetters) == nil {
             validationErrors.append(.passwordDoesNotContainUppercaseCharacters)
         }
         
-        if password.contains(where: { $0.isLowercase }) == false {
+        if password.rangeOfCharacter(from: .lowercaseLetters) == nil {
             validationErrors.append(.passwordDoesNotContainLowercaseCharacters)
         }
         
-        if password.contains(where: { $0.isNumber }) == false {
+        if password.rangeOfCharacter(from: .decimalDigits) == nil {
             validationErrors.append(.passwordDoesNotContainDigits)
         }
         
@@ -149,10 +126,11 @@ struct PasswordValidator {
 //Lowercase Requirement: Password must contain at least one lowercase letter. ✅
 //Digit Requirement: Password must contain at least one digit. ✅
 //Special Character Requirement: Password must contain at least one special character (e.g., !@#$%^&*). ✅
-// Allow adding or removing rules easily. For example, users of this class should be able to specify that they only want to check for length and digits without other rules.
+
 
 
 // 1. Write couple of tests
 // 2. Add Array extension for convienience
-
+// 3. Add parameters for special characters
+// 4. Rewrite with compact map but explain simplicity and mental load
 
