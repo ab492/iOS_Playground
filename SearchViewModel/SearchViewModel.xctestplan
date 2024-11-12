@@ -1,0 +1,25 @@
+{
+  "configurations" : [
+    {
+      "id" : "273FB58C-50EE-4620-B6E6-646DB237B2C1",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : false,
+      "target" : {
+        "containerPath" : "container:SearchViewModel.xcodeproj",
+        "identifier" : "AD4BB3702CE1DC6700F88BB5",
+        "name" : "SearchViewModelTests"
+      }
+    }
+  ],
+  "version" : 1
+}
