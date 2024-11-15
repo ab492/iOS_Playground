@@ -12,46 +12,83 @@ import UIKit
 
 class SearchViewModelTests: XCTestCase {
 
-    func test_whenSearchingForString_networkRequestIsFiredAfterGivenTime() {
-        let spyNetworkService = SpyNetworkService()
+    func test_whenSearchingForString_networkRequestIsFiredAfterGivenTime() async throws {
+        let spyNetworkService = SpyUrlSession()
         let sut = SearchViewModel(searchApiService: spyNetworkService, searchDebounce: 0.2)
-       
         sut.search(for: "My test string")
-        
-        // verify network request hasn't sent
-        XCTAssertEqual(spyNetworkService.callCount, 0)
+        XCTAssertEqual(spyNetworkService.dataTaskCallCount, 0, "The request should not have fired immediately")
 
-        // wait 0.2 seconds
-        let expectation = XCTestExpectation(description: "Search result fired after some delay")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.21) {
-            expectation.fulfill()
-        }
-        
-        wait(for: [expectation], timeout: 0.25)
-        
-        // verify network request has sent
-        XCTAssertEqual(spyNetworkService.callCount, 1)
+        // Wait for debounce time to elapse
+        let delay = UInt64(0.21 * 1_000_000_000)
+        try await Task.sleep(nanoseconds: delay)
+
+        XCTAssertEqual(spyNetworkService.dataTaskCallCount, 1)
     }
 }
 
-protocol NetworkService {
-    
-}
-
-class SpyNetworkService: NetworkService {
-    var callCount = 0
+protocol URLSessionProtocol {
+    func data(for request: URLRequest) async throws -> (Data, URLResponse)
 }
 
 struct SearchViewModel {
-    let searchApiService: NetworkService
+    
+    let urlSession: URLSessionProtocol
     let searchDebounce: Double
     
+    init(searchApiService:  URLSessionProtocol = URLSession.shared, searchDebounce: Double) {
+        self.urlSession = searchApiService
+        self.searchDebounce = searchDebounce
+    }
+    
     func search(for searchTerm: String) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + searchDebounce) {
-//            searchApiService.search(for: searchTerm)
+        Task {
+            try? await Task.sleep(nanoseconds: UInt64(searchDebounce * 1_000_000_000))
+            
+            guard let url = URL(string: "https://www.my-search-service/\(searchTerm)") else {
+                print("Invalid URL")
+                return
+            }
+            
+            let request = URLRequest(url: url)
+            do {
+                let (_, _) = try await urlSession.data(for: request)
+            } catch {
+                print("Request failed with error: \(error)")
+            }
         }
     }
 }
 
-// When searching for a string, network request is fired only after given time
+extension URLSession: URLSessionProtocol { }
+
+class SpyUrlSession: URLSessionProtocol {
+    var dataTaskCallCount = 0
+    var lastSentRequest: URLRequest?
+    func data(for request: URLRequest) async throws -> (Data, URLResponse) {
+        dataTaskCallCount += 1
+        lastSentRequest = request
+        return (Data(), URLResponse())
+    }
+}
+
+
+//
+//    func test_whenSearchingForString_urlRequestContainsCorrectInfo() async {
+//        let spyNetworkService = SpyUrlSession()
+//        let sut = SearchViewModel(searchApiService: spyNetworkService, searchDebounce: 0.2)
+//
+//        sut.search(for: "My test string")
+//
+//        // Wait for debounce time to elapse
+//        let delay = UInt64(0.21 * 1_000_000_000)
+//        try? await Task.sleep(nanoseconds: delay)
+//
+//        XCTAssertEqual(spyNetworkService.lastSentRequest!.url, URL(string: "https://www.my-search-service/My%20test%20string"))
+//    }
+
+// When searching for a string, network request is fired only after given time ✅
+// When search for a string, network request contains correct string
 // When search for a string, previous request is cancelled if in progress
+
+
+// Would it be better to use async await?
