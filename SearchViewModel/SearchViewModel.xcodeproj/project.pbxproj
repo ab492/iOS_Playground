@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		AD9208ED2CE7273F00D6137A /* Clocks in Frameworks */ = {isa = PBXBuildFile; productRef = AD9208EC2CE7273F00D6137A /* Clocks */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		AD4BB3722CE1DC6700F88BB5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -47,6 +51,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AD9208ED2CE7273F00D6137A /* Clocks in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -115,6 +120,7 @@
 			);
 			name = SearchViewModelTests;
 			packageProductDependencies = (
+				AD9208EC2CE7273F00D6137A /* Clocks */,
 			);
 			productName = SearchViewModelTests;
 			productReference = AD4BB3712CE1DC6700F88BB5 /* SearchViewModelTests.xctest */;
@@ -148,6 +154,9 @@
 			);
 			mainGroup = AD4BB3582CE1DC6500F88BB5;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				AD9208EB2CE7273F00D6137A /* XCRemoteSwiftPackageReference "swift-clocks" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = AD4BB3622CE1DC6500F88BB5 /* Products */;
 			projectDirPath = "";
@@ -448,6 +457,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		AD9208EB2CE7273F00D6137A /* XCRemoteSwiftPackageReference "swift-clocks" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-clocks.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.5;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		AD9208EC2CE7273F00D6137A /* Clocks */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AD9208EB2CE7273F00D6137A /* XCRemoteSwiftPackageReference "swift-clocks" */;
+			productName = Clocks;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = AD4BB3592CE1DC6500F88BB5 /* Project object */;
 }
