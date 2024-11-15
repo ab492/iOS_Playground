@@ -34,35 +34,44 @@ class TestCase: NSObject {
 
 class WasRun: TestCase {
     var wasRun = false
+    var wasSetup = false
     
     override init(_ name: String) {
         super.init(name)
     }
     
     @objc func testMethod() {
+        setUp()
         wasRun = true
+    }
+    
+    func setUp() {
+        wasRun = false
+        wasSetup = true
     }
 }
 
 class TestCaseTest: TestCase {
     @objc func testRunning() {
         let test = WasRun("testMethod")
-        Assert(test.wasRun == false)
         test.run()
         Assert(test.wasRun == true)
+    }
+    
+    @objc func testSetUp() {
+        let test = WasRun("testMethod")
+        test.run()
+        Assert(test.wasSetup == true)
     }
 }
 
 TestCaseTest("testRunning").run()
-
-//let test = WasRun("testMethod")
-//Assert(test.wasRun == false)
-//test.run()
-//Assert(test.wasRun == true)
+TestCaseTest("testSetUp").run()
 
 
 
-// Invoke test method
+
+// Invoke test method ✅
 // Invoke setUp first
 // Invoke tearDown afterward
 // Invoke tearDown even if the test method fails
