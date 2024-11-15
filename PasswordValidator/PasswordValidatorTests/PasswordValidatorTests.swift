@@ -126,11 +126,3 @@ struct PasswordValidator {
 //Lowercase Requirement: Password must contain at least one lowercase letter. ✅
 //Digit Requirement: Password must contain at least one digit. ✅
 //Special Character Requirement: Password must contain at least one special character (e.g., !@#$%^&*). ✅
-
-
-
-// 1. Write couple of tests
-// 2. Add Array extension for convienience
-// 3. Add parameters for special characters
-// 4. Rewrite with compact map but explain simplicity and mental load
-
